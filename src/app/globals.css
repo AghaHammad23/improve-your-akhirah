@@ -1,0 +1,652 @@
+@import "tailwindcss";
+
+/* Dark mode follows data-theme on <html> (set before paint by the inline script in the root layout). */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
+ * Brand palette, taken from the supplied logo (public/brand/):
+ *   brand-700 #0F5E5E and brand-800 #0A4444 = the logo's teal gradient
+ *   gold-400  #D9C48F                         = the logo ring (decorative; fails contrast as text on light)
+ *   cream-200 #F3E6C8                         = the logo lettering
+ */
+@theme {
+  --color-brand-50: #effaf9;
+  --color-brand-100: #d6f3f0;
+  --color-brand-200: #aee6e1;
+  --color-brand-300: #74cdc7;
+  --color-brand-400: #3fb0aa;
+  --color-brand-500: #23908b;
+  --color-brand-600: #187471;
+  --color-brand-700: #0f5e5e;
+  --color-brand-800: #0a4444;
+  --color-brand-900: #073535;
+  --color-brand-950: #042424;
+
+  --color-gold-100: #f7f0dd;
+  --color-gold-200: #efe3c2;
+  --color-gold-300: #e6d6ad;
+  --color-gold-400: #d9c48f;
+  --color-gold-500: #c8ab68;
+  --color-gold-600: #a88a4a;
+  --color-gold-700: #7a5f2e;
+  --color-gold-800: #5a4521;
+
+  --color-cream-50: #fbf8f1;
+  --color-cream-100: #f8f1e2;
+  --color-cream-200: #f3e6c8;
+  --color-cream-300: #eadab0;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-fade-up: fade-up 0.8s var(--ease-out-expo) both;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-icon-pop: icon-pop 0.5s var(--ease-out-expo);
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  @keyframes icon-pop {
+    from {
+      opacity: 0;
+      transform: rotate(-90deg) scale(0.5);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* Semantic tokens: use these for page surfaces and text so dark mode works automatically. */
+:root {
+  --surface: #fbf8f1;
+  --surface-raised: #ffffff;
+  --ink: #0d2a2a;
+  --muted: #4a5f5e;
+  --line: #e4dcc8;
+  --accent: #0f5e5e;
+  --focus: #187471;
+
+  /* Glass */
+  --glass-bg: rgb(255 255 255 / 0.62);
+  --glass-border: rgb(255 255 255 / 0.75);
+  --glass-shadow: 0 1px 0 rgb(255 255 255 / 0.8) inset, 0 10px 30px -12px rgb(10 68 68 / 0.22);
+  --glass-icon-bg: linear-gradient(145deg, rgb(255 255 255 / 0.85), rgb(214 243 240 / 0.35));
+  --glass-icon-fg: #0f5e5e;
+  --ambient-a: rgb(63 176 170 / 0.22);
+  --ambient-b: rgb(217 196 143 / 0.3);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --surface: #061c1c;
+  --surface-raised: #0b2a2a;
+  --ink: #f3ecdf;
+  --muted: #a9bdba;
+  --line: #1d3e3d;
+  --accent: #74cdc7;
+  --focus: #e6d6ad;
+
+  --glass-bg: rgb(255 255 255 / 0.045);
+  --glass-border: rgb(255 255 255 / 0.1);
+  --glass-shadow: 0 1px 0 rgb(255 255 255 / 0.08) inset, 0 18px 40px -16px rgb(0 0 0 / 0.6);
+  --glass-icon-bg: linear-gradient(145deg, rgb(255 255 255 / 0.16), rgb(255 255 255 / 0.03));
+  --glass-icon-fg: #e6d6ad;
+  --ambient-a: rgb(35 144 139 / 0.22);
+  --ambient-b: rgb(200 171 104 / 0.12);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), Georgia, serif;
+  --font-arabic: var(--font-plex-arabic), var(--font-manrope), sans-serif;
+  --font-arabic-display: var(--font-amiri), var(--font-plex-arabic), serif;
+  --font-urdu: var(--font-nastaliq), var(--font-plex-arabic), serif;
+  --font-urdu-display: var(--font-gulzar), var(--font-nastaliq), serif;
+  --font-quran: var(--font-amiri-quran), var(--font-amiri), serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+}
+
+/* Script-appropriate fonts per language. Nastaliq needs extra line height. */
+html[lang="ar"] body {
+  font-family: var(--font-arabic);
+  line-height: 1.8;
+}
+html[lang="ur"] body {
+  font-family: var(--font-urdu);
+  line-height: 2.2;
+}
+
+@layer components {
+  /* Headings: elegant serif in English; Amiri in Arabic; Gulzar (display Nastaliq) in Urdu. */
+  .font-heading {
+    font-family: var(--font-serif);
+    letter-spacing: 0.005em;
+  }
+  html[lang="ar"] .font-heading {
+    font-family: var(--font-arabic-display);
+  }
+  html[lang="ur"] .font-heading {
+    font-family: var(--font-urdu-display);
+    line-height: 1.9;
+  }
+
+  /* Frosted glass panel. Needs something colourful behind it (see .ambient) to look like glass. */
+  .glass {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+  }
+
+  /* Glass icon tile with a soft gold glow behind it. */
+  .glass-icon {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    color: var(--glass-icon-fg);
+    background: var(--glass-icon-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.6) inset,
+      0 -8px 16px -10px rgb(10 68 68 / 0.25) inset,
+      0 10px 22px -12px rgb(10 68 68 / 0.45);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition:
+      transform 0.5s var(--ease-out-expo),
+      box-shadow 0.5s var(--ease-out-expo);
+  }
+  .glass-icon::before {
+    content: "";
+    position: absolute;
+    inset: 18% 18% -10% 18%;
+    z-index: -1;
+    border-radius: 999px;
+    background: radial-gradient(circle, var(--color-gold-400), transparent 70%);
+    filter: blur(10px);
+    opacity: 0.55;
+    transition: opacity 0.5s var(--ease-out-expo);
+  }
+
+  /* Soft coloured light behind glass sections. */
+  .ambient {
+    position: relative;
+    isolation: isolate;
+  }
+  .ambient::before,
+  .ambient::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    border-radius: 999px;
+    filter: blur(70px);
+    pointer-events: none;
+  }
+  .ambient::before {
+    width: 26rem;
+    height: 26rem;
+    inset-block-start: 2rem;
+    inset-inline-start: -6rem;
+    background: var(--ambient-a);
+  }
+  .ambient::after {
+    width: 24rem;
+    height: 24rem;
+    inset-block-end: 0;
+    inset-inline-end: -5rem;
+    background: var(--ambient-b);
+  }
+
+  /* Subtle eight-point star lattice (original pattern) for dark teal bands. */
+  .islamic-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23d9c48f' stroke-width='1'%3E%3Crect x='22' y='22' width='28' height='28'/%3E%3Crect x='22' y='22' width='28' height='28' transform='rotate(45 36 36)'/%3E%3Ccircle cx='36' cy='36' r='5'/%3E%3Cpath d='M0 36h8M64 36h8M36 0v8M36 64v8'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 72px 72px;
+  }
+
+  /* Buttons */
+  .btn {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: inline-flex;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 999px;
+    padding-inline: 1.75rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    transition:
+      transform 0.4s var(--ease-out-expo),
+      box-shadow 0.4s var(--ease-out-expo),
+      background-color 0.3s,
+      border-color 0.3s,
+      color 0.3s;
+  }
+  .btn:active {
+    transform: translateY(0) scale(0.98);
+  }
+  /* Light sweep across the button on hover. */
+  .btn::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: -60%;
+    z-index: -1;
+    width: 45%;
+    background: linear-gradient(100deg, transparent, rgb(255 255 255 / 0.55), transparent);
+    transform: skewX(-20deg);
+    opacity: 0;
+    transition:
+      inset-inline-start 0.7s var(--ease-out-expo),
+      opacity 0.3s;
+  }
+  .btn:hover::after {
+    inset-inline-start: 120%;
+    opacity: 1;
+  }
+
+  .btn-gold {
+    color: var(--color-brand-900);
+    background: linear-gradient(135deg, var(--color-gold-200), var(--color-gold-400) 45%, var(--color-gold-500));
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.6) inset,
+      0 10px 24px -10px rgb(200 171 104 / 0.8);
+  }
+  .btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.6) inset,
+      0 16px 34px -10px rgb(200 171 104 / 0.95),
+      0 0 0 4px rgb(217 196 143 / 0.18);
+  }
+
+  .btn-glass {
+    color: var(--color-cream-100);
+    border: 1px solid rgb(243 230 200 / 0.45);
+    background: rgb(255 255 255 / 0.06);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .btn-glass:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-gold-300);
+    background: rgb(255 255 255 / 0.12);
+    box-shadow: 0 12px 28px -12px rgb(0 0 0 / 0.45);
+  }
+
+  .btn-teal {
+    color: #fff;
+    background: linear-gradient(135deg, var(--color-brand-600), var(--color-brand-800));
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.18) inset,
+      0 10px 24px -12px rgb(10 68 68 / 0.7);
+  }
+  .btn-teal:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.18) inset,
+      0 16px 32px -12px rgb(10 68 68 / 0.85),
+      0 0 0 4px rgb(63 176 170 / 0.18);
+  }
+  [data-theme="dark"] .btn-teal {
+    color: var(--color-brand-950);
+    background: linear-gradient(135deg, var(--color-brand-200), var(--color-brand-400));
+  }
+
+  /* Round icon buttons in the header */
+  .icon-btn {
+    display: inline-flex;
+    width: 2.75rem;
+    height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    color: var(--color-cream-100);
+    border: 1px solid transparent;
+    transition:
+      background-color 0.3s,
+      border-color 0.3s,
+      transform 0.4s var(--ease-out-expo);
+  }
+  .icon-btn:hover {
+    background: rgb(255 255 255 / 0.1);
+    border-color: rgb(243 230 200 / 0.25);
+    transform: translateY(-1px);
+  }
+
+  /* Header nav link with an underline that grows from the reading-start side. */
+  .nav-link {
+    position: relative;
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    white-space: nowrap;
+    padding-inline: 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: rgb(248 241 226 / 0.85);
+    transition: color 0.3s;
+  }
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0.75rem;
+    bottom: 0.45rem;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--color-gold-300), var(--color-gold-500));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s var(--ease-out-expo);
+  }
+  [dir="rtl"] .nav-link::after {
+    transform-origin: right;
+  }
+  .nav-link:hover {
+    color: var(--color-cream-50);
+  }
+  .nav-link:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* Feature card: glass, lifts and picks up a gold edge on hover. */
+  .card-premium {
+    border-radius: 1.5rem;
+    transition:
+      transform 0.5s var(--ease-out-expo),
+      box-shadow 0.5s var(--ease-out-expo),
+      border-color 0.5s;
+  }
+  .card-premium:hover {
+    transform: translateY(-6px);
+    border-color: rgb(217 196 143 / 0.7);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.5) inset,
+      0 28px 50px -24px rgb(10 68 68 / 0.45);
+  }
+  .card-premium:hover .glass-icon {
+    transform: translateY(-2px) rotate(-6deg) scale(1.06);
+  }
+  .card-premium:hover .glass-icon::before {
+    opacity: 0.9;
+  }
+  .card-premium .card-arrow {
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+  .card-premium:hover .card-arrow {
+    transform: translateX(4px);
+  }
+  [dir="rtl"] .card-premium .card-arrow {
+    transform: scaleX(-1);
+  }
+  [dir="rtl"] .card-premium:hover .card-arrow {
+    transform: scaleX(-1) translateX(4px);
+  }
+}
+
+/* ---------------- Quran reader ---------------- */
+@layer components {
+  .font-quran {
+    font-family: var(--font-quran);
+  }
+  .font-urdu {
+    font-family: var(--font-urdu);
+  }
+
+  /* Eight-point star number badge (two overlapping squares). */
+  .star-badge {
+    position: relative;
+    display: inline-grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .star-badge::before,
+  .star-badge::after {
+    content: "";
+    position: absolute;
+    inset: 0.45rem;
+    border: 1.5px solid var(--color-gold-500);
+    border-radius: 0.3rem;
+    background: var(--glass-bg);
+  }
+  .star-badge::after {
+    transform: rotate(45deg);
+  }
+  .star-badge > span {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Toggle chips in the reading toolbar */
+  .chip {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--glass-bg);
+    padding-inline: 0.9rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--muted);
+    transition:
+      background-color 0.3s,
+      border-color 0.3s,
+      color 0.3s,
+      transform 0.4s var(--ease-out-expo);
+  }
+  .chip:hover:not(:disabled) {
+    border-color: var(--color-gold-500);
+    color: var(--ink);
+    transform: translateY(-1px);
+  }
+  .chip[aria-pressed="true"] {
+    border-color: transparent;
+    background: linear-gradient(135deg, var(--color-brand-600), var(--color-brand-800));
+    color: #fff;
+  }
+  [data-theme="dark"] .chip[aria-pressed="true"] {
+    background: linear-gradient(135deg, var(--color-gold-300), var(--color-gold-500));
+    color: var(--color-brand-950);
+  }
+  .chip:disabled {
+    opacity: 0.4;
+  }
+
+  /* One verse */
+  .verse {
+    scroll-margin-top: 9rem;
+    border-bottom: 1px solid var(--line);
+    border-radius: 1.25rem;
+    padding: 1.25rem 0.75rem;
+    transition:
+      background-color 0.5s,
+      box-shadow 0.5s;
+  }
+  .verse[data-active] {
+    border-bottom-color: transparent;
+    background: linear-gradient(135deg, rgb(217 196 143 / 0.18), rgb(63 176 170 / 0.08));
+    box-shadow:
+      inset 0 0 0 1px rgb(217 196 143 / 0.45),
+      0 18px 40px -26px rgb(10 68 68 / 0.5);
+  }
+  .bismillah {
+    border-bottom: 0;
+    padding-block: 1.5rem 1rem;
+    font-size: calc(2rem * var(--quran-scale, 1));
+    line-height: 2;
+  }
+
+  .quran-text {
+    font-family: var(--font-quran);
+    font-size: calc(1.65rem * var(--quran-scale, 1));
+    line-height: 2.3;
+    text-align: start;
+    color: var(--ink);
+    word-spacing: 0.05em;
+  }
+  @media (min-width: 640px) {
+    .quran-text {
+      font-size: calc(2rem * var(--quran-scale, 1));
+    }
+  }
+
+  .tr {
+    margin-top: 0.9rem;
+    color: var(--muted);
+  }
+  .tr-ur {
+    font-size: 1.15rem;
+    line-height: 2.3;
+  }
+  .tr-en {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+  #reader[data-tr-ur="false"] .tr-ur,
+  #reader[data-tr-en="false"] .tr-en {
+    display: none;
+  }
+
+  .fn-ref {
+    margin-inline: 0.1em;
+    font-family: var(--font-sans);
+    font-size: 0.65em;
+    font-weight: 700;
+    color: var(--color-gold-700);
+  }
+  [data-theme="dark"] .fn-ref {
+    color: var(--color-gold-300);
+  }
+  .notes {
+    margin-top: 0.4rem;
+    font-size: 0.85em;
+  }
+  .notes > summary {
+    display: inline-flex;
+    min-height: 2.75rem;
+    cursor: pointer;
+    align-items: center;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  html[lang="ur"] .notes > summary {
+    font-family: var(--font-urdu);
+  }
+  html[lang="ar"] .notes > summary {
+    font-family: var(--font-arabic);
+  }
+
+  /* Small round play button beside each verse */
+  .verse-play {
+    display: inline-flex;
+    width: 2.75rem;
+    height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--glass-bg);
+    color: var(--accent);
+    transition:
+      transform 0.4s var(--ease-out-expo),
+      background-color 0.3s,
+      border-color 0.3s;
+  }
+  .verse-play:hover {
+    transform: scale(1.08);
+    border-color: var(--color-gold-500);
+  }
+  .verse-play[aria-pressed="true"] {
+    border-color: transparent;
+    background: linear-gradient(135deg, var(--color-gold-200), var(--color-gold-500));
+    color: var(--color-brand-900);
+  }
+
+  .player-select {
+    min-height: 2.75rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgb(243 230 200 / 0.2);
+    background: rgb(255 255 255 / 0.06);
+    padding-inline: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--color-cream-50);
+  }
+  .player-select option {
+    color: #0d2a2a;
+  }
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Theme switch: a circle grows from the toggle (see ThemeToggle). Turn off the default cross-fade. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

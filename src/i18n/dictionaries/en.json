@@ -1,0 +1,127 @@
+{
+  "meta": {
+    "title": "Improve Your Akhirah",
+    "description": "A free Islamic companion: the Quran with translations and audio, Hadith, prayer times, Qibla, duas and daily tools, in Arabic, Urdu and English."
+  },
+  "brand": {
+    "name": "Improve Your Akhirah",
+    "tagline": "Your free companion for the Quran, Hadith and daily worship"
+  },
+  "nav": {
+    "label": "Main navigation",
+    "home": "Home",
+    "quran": "Quran",
+    "hadith": "Hadith",
+    "search": "Search",
+    "prayerTimes": "Prayer times",
+    "duas": "Duas & Azkar",
+    "tools": "Daily tools",
+    "sources": "Sources & credits",
+    "menu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "a11y": {
+    "skip": "Skip to main content",
+    "language": "Choose language",
+    "themeToDark": "Switch to dark mode",
+    "themeToLight": "Switch to light mode"
+  },
+  "home": {
+    "heroText": "Read and listen to the Quran, study Hadith and keep track of your prayers: free, in Arabic, Urdu and English.",
+    "ctaQuran": "Read the Quran",
+    "ctaPrayer": "Prayer times",
+    "featuresTitle": "Everything in one place",
+    "comingSoon": "Coming soon",
+    "freeNote": "Free for everyone. Content comes from trusted, openly published sources.",
+    "features": {
+      "quran": {
+        "title": "Quran",
+        "text": "All 114 surahs with Urdu and English translations, word-by-word meaning, tafsir and recitation."
+      },
+      "hadith": {
+        "title": "Hadith",
+        "text": "Bukhari, Muslim and the other major collections in Arabic, Urdu and English, with gradings."
+      },
+      "search": {
+        "title": "Search",
+        "text": "Search the Quran and Hadith in Arabic, Urdu, English or Roman Urdu."
+      },
+      "prayerTimes": {
+        "title": "Prayer times & Qibla",
+        "text": "Accurate prayer times for your location, the Qibla direction and the Hijri date."
+      },
+      "duas": {
+        "title": "Duas & Azkar",
+        "text": "Morning and evening azkar and everyday duas, with their references."
+      },
+      "tools": {
+        "title": "Daily tools",
+        "text": "Tasbeeh counter, 99 Names of Allah, Zakat calculator and Khatam tracker."
+      }
+    },
+    "available": "Available"
+  },
+  "section": {
+    "comingSoonTitle": "Coming soon",
+    "comingSoonText": "This section is being built and will be available soon, in sha Allah.",
+    "backHome": "Back to home"
+  },
+  "footer": {
+    "free": "A free, non-commercial project.",
+    "sources": "Sources & credits"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "The page you are looking for doesn't exist or has moved.",
+    "home": "Go to home"
+  },
+  "quran": {
+    "title": "The Holy Quran",
+    "subtitle": "Read all 114 surahs with Urdu and English translation, and listen to renowned reciters.",
+    "searchLabel": "Find a surah",
+    "searchPlaceholder": "Name or number, e.g. Yaseen or 36",
+    "noResults": "No surah matches your search.",
+    "versesCount": "{n} verses",
+    "makki": "Makki",
+    "madani": "Madani",
+    "surahNumber": "Surah {n}",
+    "previous": "Previous surah",
+    "next": "Next surah",
+    "allSurahs": "All surahs",
+    "translationsLabel": "Translations",
+    "urdu": "Urdu",
+    "english": "English",
+    "textSize": "Arabic text size",
+    "smaller": "Smaller text",
+    "larger": "Larger text",
+    "footnotes": "Footnotes",
+    "playVerse": "Play verse {n}",
+    "verseLabel": "Verse {n}",
+    "creditsTitle": "Sources",
+    "creditArabic": "Arabic text (Uthmani script, Hafs) and translations from QuranEnc.com.",
+    "creditUr": "Urdu translation: Muhammad Junagarhi (Rowwad Translation Center), version {v}.",
+    "creditEn": "English translation: Saheeh International (Noor International Center), version {v}.",
+    "creditMeta": "Surah information: Tanzil Project, CC BY 3.0.",
+    "creditAudio": "Recitation audio: EveryAyah.com.",
+    "notesError": "The footnotes could not be loaded. Check your connection and try again."
+  },
+  "player": {
+    "playSurah": "Play surah",
+    "play": "Play",
+    "pause": "Pause",
+    "previous": "Previous verse",
+    "next": "Next verse",
+    "reciter": "Reciter",
+    "repeat": "Repeat each verse",
+    "once": "Once",
+    "times": "{n}×",
+    "speed": "Speed",
+    "follow": "Follow along",
+    "close": "Close player",
+    "nowPlaying": "{surah}, verse {n}",
+    "loading": "Loading…",
+    "error": "This verse's audio could not be loaded. Check your connection and try again.",
+    "options": "Player options",
+    "bismillah": "Bismillah"
+  }
+}
