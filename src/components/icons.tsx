@@ -131,6 +131,22 @@ export const SlidersIcon = (p: IconProps) => (
   </Base>
 );
 
+export const CopyIcon = (p: IconProps) => (
+  <Base {...p}>
+    <rect x="8.5" y="8.5" width="11" height="11" rx="2.5" />
+    <path d="M15.5 8.5V6.5a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2" />
+  </Base>
+);
+
+export const ShareIcon = (p: IconProps) => (
+  <Base {...p}>
+    <circle cx="17.5" cy="5.5" r="2.5" />
+    <circle cx="6.5" cy="12" r="2.5" />
+    <circle cx="17.5" cy="18.5" r="2.5" />
+    <path d="m8.7 10.8 6.6-4M8.7 13.2l6.6 4" />
+  </Base>
+);
+
 /** Points to the reading end; CSS mirrors it in RTL. */
 export const ArrowIcon = (p: IconProps) => (
   <Base {...p}>

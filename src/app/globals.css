@@ -516,6 +516,22 @@ html[lang="ur"] body {
       inset 0 0 0 1px rgb(217 196 143 / 0.45),
       0 18px 40px -26px rgb(10 68 68 / 0.5);
   }
+  /* Brief gold glow when jumping to a verse */
+  .verse[data-flash] {
+    animation: verse-flash 1.8s var(--ease-out-expo);
+  }
+  .verse:focus {
+    outline: none;
+  }
+  .verse-input {
+    appearance: textfield;
+    -moz-appearance: textfield;
+  }
+  .verse-input::-webkit-inner-spin-button,
+  .verse-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
   .bismillah {
     border-bottom: 0;
     padding-block: 1.5rem 1rem;
@@ -622,6 +638,18 @@ html[lang="ur"] body {
   }
   .player-select option {
     color: #0d2a2a;
+  }
+}
+
+@keyframes verse-flash {
+  0%,
+  30% {
+    background-color: rgb(217 196 143 / 0.3);
+    box-shadow: inset 0 0 0 1px rgb(217 196 143 / 0.65);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: none;
   }
 }
 

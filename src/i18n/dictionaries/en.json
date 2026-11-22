@@ -103,7 +103,14 @@
     "creditEn": "English translation: Saheeh International (Noor International Center), version {v}.",
     "creditMeta": "Surah information: Tanzil Project, CC BY 3.0.",
     "creditAudio": "Recitation audio: EveryAyah.com.",
-    "notesError": "The footnotes could not be loaded. Check your connection and try again."
+    "notesError": "The footnotes could not be loaded. Check your connection and try again.",
+    "copyVerse": "Copy verse {n}",
+    "shareVerse": "Share verse {n}",
+    "copied": "Verse copied",
+    "linkCopied": "Link copied",
+    "copyFailed": "Couldn't copy. Please try again.",
+    "goToVerse": "Go to verse",
+    "go": "Go"
   },
   "player": {
     "playSurah": "Play surah",

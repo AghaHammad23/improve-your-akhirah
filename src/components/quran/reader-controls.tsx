@@ -24,6 +24,11 @@ export type ReaderLabels = {
   smaller: string;
   larger: string;
   notesError: string;
+  copied: string;
+  linkCopied: string;
+  copyFailed: string;
+  goToVerse: string;
+  go: string;
   playSurah: string;
   play: string;
   pause: string;
@@ -103,6 +108,86 @@ export function ReaderControls({
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [showOptions, setShowOptions] = useState(false);
   const optionsId = useId();
+  const goId = useId();
+  const goInputRef = useRef<HTMLInputElement>(null);
+  const [toast, setToast] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 2200);
+    return () => clearTimeout(t);
+  }, [toast]);
+
+  /** Scrolls to a verse, flashes it and moves focus there (also used for #v-N links). */
+  const goTo = useCallback((n: number) => {
+    const el = document.getElementById(`v-${n}`);
+    if (!el) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    el.removeAttribute("data-flash");
+    void el.offsetWidth; // restart the flash animation
+    el.setAttribute("data-flash", "true");
+    el.tabIndex = -1;
+    el.focus({ preventScroll: true });
+    history.replaceState(null, "", `#v-${n}`);
+  }, []);
+
+  // Open at the verse in the URL (#v-255), on load and when the hash changes.
+  useEffect(() => {
+    const fromHash = () => {
+      const m = /^#v-(\d+)$/.exec(window.location.hash);
+      if (m) goTo(Number(m[1]));
+    };
+    fromHash();
+    window.addEventListener("hashchange", fromHash);
+    return () => window.removeEventListener("hashchange", fromHash);
+  }, [goTo]);
+
+  /** Arabic plus the translations currently shown, without footnote markers. */
+  const shareTextFor = useCallback((n: number) => {
+    const li = document.getElementById(`v-${n}`);
+    const root = document.getElementById("reader");
+    if (!li || !root) return "";
+    const parts = [li.querySelector(".quran-text")?.textContent?.trim() ?? ""];
+    for (const lang of ["ur", "en"] as const) {
+      if (root.dataset[lang === "ur" ? "trUr" : "trEn"] !== "true") continue;
+      const p = li.querySelector(`.tr-${lang} > p`);
+      if (!p) continue;
+      const clone = p.cloneNode(true) as HTMLElement;
+      clone.querySelectorAll(".fn-ref").forEach((sup) => sup.remove());
+      parts.push((clone.textContent ?? "").replace(/\s+/g, " ").trim());
+    }
+    return parts.filter(Boolean).join("\n\n");
+  }, []);
+
+  // Copy and share buttons rendered next to each verse.
+  useEffect(() => {
+    const root = document.getElementById("reader");
+    if (!root) return;
+    const onClick = async (e: MouseEvent) => {
+      const target = e.target as Element;
+      const copyBtn = target.closest<HTMLElement>("[data-copy-verse]");
+      const shareBtn = target.closest<HTMLElement>("[data-share-verse]");
+      if (!copyBtn && !shareBtn) return;
+      const n = Number(copyBtn ? copyBtn.dataset.copyVerse : shareBtn!.dataset.shareVerse);
+      const url = `${window.location.origin}/${locale}/quran/${surah}#v-${n}`;
+      const reference = `${surahName} ${surah}:${n}`;
+      const text = `${shareTextFor(n)}\n\n(${reference})`;
+      try {
+        if (shareBtn && typeof navigator.share === "function") {
+          await navigator.share({ title: reference, text, url });
+          return;
+        }
+        await navigator.clipboard.writeText(copyBtn ? `${text}\n${url}` : url);
+        setToast(copyBtn ? labels.copied : labels.linkCopied);
+      } catch (err) {
+        // Closing the share sheet is not an error.
+        if (!(err instanceof DOMException && err.name === "AbortError")) setToast(labels.copyFailed);
+      }
+    };
+    root.addEventListener("click", onClick);
+    return () => root.removeEventListener("click", onClick);
+  }, [locale, surah, surahName, shareTextFor, labels.copied, labels.linkCopied, labels.copyFailed]);
 
   const srcFor = useCallback(
     (n: number, reciter: string) => (n === 0 ? verseAudioUrl(reciter, 1, 1) : verseAudioUrl(reciter, surah, n)),
@@ -287,6 +372,33 @@ export function ReaderControls({
             {playing ? labels.pause : active ? labels.play : labels.playSurah}
           </button>
 
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              const n = Number(goInputRef.current?.value);
+              if (Number.isInteger(n) && n >= 1 && n <= totalVerses) goTo(n);
+            }}
+            className="flex items-center gap-1"
+          >
+            <label htmlFor={goId} className="sr-only">
+              {labels.goToVerse}
+            </label>
+            <input
+              ref={goInputRef}
+              id={goId}
+              type="number"
+              inputMode="numeric"
+              min={1}
+              max={totalVerses}
+              placeholder="#"
+              title={labels.goToVerse}
+              className="chip verse-input w-18 justify-center text-center text-ink"
+            />
+            <button type="submit" className="chip">
+              {labels.go}
+            </button>
+          </form>
+
           <div className="flex items-center gap-2">
             <div role="group" aria-label={labels.translations} className="flex gap-1">
               {(["ur", "en"] as const).map((lang) => (
@@ -347,6 +459,17 @@ export function ReaderControls({
           }
         }}
       />
+
+      {/* Confirmation after copy/share */}
+      <p
+        role="status"
+        aria-live="polite"
+        className={`pointer-events-none fixed inset-x-0 z-50 mx-auto w-fit rounded-full bg-brand-900/95 px-5 py-2.5 text-sm font-semibold text-cream-100 shadow-lg backdrop-blur transition-all duration-300 ${
+          active ? "bottom-28" : "bottom-6"
+        } ${toast ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"}`}
+      >
+        {toast}
+      </p>
 
       {/* Floating player */}
       {active && (

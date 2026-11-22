@@ -25,10 +25,10 @@ Read `docs/PROJECT_BRIEF.md` first: it holds the full scope, the constraints and
   - name: **Improve Your Akhirah**; Arabic wordmark: الآخرة
 
   Use them as supplied; don't redraw or alter the logo.
-- **Fonts:**
-  - Noto Serif for headings (matches the logo wordmark) and Inter for English UI
-  - Noto Naskh Arabic for Arabic UI
-  - Noto Nastaliq Urdu for Urdu
+- **Fonts** (all Google Fonts, OFL; set up in `src/app/[lang]/layout.tsx`):
+  - English: Cormorant Garamond for headings, Manrope for UI
+  - Arabic: Amiri for headings, IBM Plex Sans Arabic for UI
+  - Urdu: Gulzar for headings, Noto Nastaliq Urdu for UI
   - Amiri Quran for Quran text
 - **RTL support:** Arabic and Urdu need correct right-to-left layout (`dir="rtl"`) and proper fonts. Use logical CSS properties (`ms-`/`me-`, `ps-`/`pe-`, `start`/`end`) rather than left/right so layouts flip correctly. Test both directions.
 - Accessible: semantic HTML, keyboard navigation, sufficient contrast.

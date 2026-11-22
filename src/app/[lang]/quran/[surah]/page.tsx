@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense, type CSSProperties } from "react";
-import { ArrowIcon, PlayIcon } from "@/components/icons";
+import { ArrowIcon, CopyIcon, PlayIcon, ShareIcon } from "@/components/icons";
 import { InlineScript } from "@/components/inline-script";
 import { ReaderControls } from "@/components/quran/reader-controls";
 import { TranslationText } from "@/components/quran/translation-text";
@@ -134,6 +134,11 @@ async function SurahContent({ params }: Pick<PageProps<"/[lang]/quran/[surah]">,
           smaller: q.smaller,
           larger: q.larger,
           notesError: q.notesError,
+          copied: q.copied,
+          linkCopied: q.linkCopied,
+          copyFailed: q.copyFailed,
+          goToVerse: q.goToVerse,
+          go: q.go,
           ...dict.player,
         }}
       />
@@ -161,16 +166,36 @@ async function SurahContent({ params }: Pick<PageProps<"/[lang]/quran/[surah]">,
                 <span className="star-badge" aria-label={fill(q.verseLabel, { n: formatNumber(locale, v.n) })}>
                   <span>{formatNumber(locale, v.n)}</span>
                 </span>
-                <button
-                  type="button"
-                  data-play-verse={v.n}
-                  aria-pressed="false"
-                  aria-label={fill(q.playVerse, { n: formatNumber(locale, v.n) })}
-                  title={fill(q.playVerse, { n: formatNumber(locale, v.n) })}
-                  className="verse-play"
-                >
-                  <PlayIcon className="size-4" />
-                </button>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    data-copy-verse={v.n}
+                    aria-label={fill(q.copyVerse, { n: formatNumber(locale, v.n) })}
+                    title={fill(q.copyVerse, { n: formatNumber(locale, v.n) })}
+                    className="verse-play"
+                  >
+                    <CopyIcon className="size-4" />
+                  </button>
+                  <button
+                    type="button"
+                    data-share-verse={v.n}
+                    aria-label={fill(q.shareVerse, { n: formatNumber(locale, v.n) })}
+                    title={fill(q.shareVerse, { n: formatNumber(locale, v.n) })}
+                    className="verse-play"
+                  >
+                    <ShareIcon className="size-4" />
+                  </button>
+                  <button
+                    type="button"
+                    data-play-verse={v.n}
+                    aria-pressed="false"
+                    aria-label={fill(q.playVerse, { n: formatNumber(locale, v.n) })}
+                    title={fill(q.playVerse, { n: formatNumber(locale, v.n) })}
+                    className="verse-play"
+                  >
+                    <PlayIcon className="size-4" />
+                  </button>
+                </div>
               </div>
               <p lang="ar" dir="rtl" className="quran-text mt-3">
                 {v.ar}
