@@ -47,6 +47,9 @@ None of these block launch while the project stays non-commercial. **If it becom
   - match it against a Roman-transliteration field
   - also map common words through a small dictionary (e.g. *namaz → صلاة*, *roza → صوم*, *jannat → جنة*)
   - use fuzzy matching (typo tolerance) in Orama
+- **Quran search as built (25 Nov 2026):** no Orama, because the default tokeniser drops Urdu letters and 6,236 verses scan in a few milliseconds. Each query runs a normalised substring scan in the browser over `public/search/quran-{ar,ur,en}.json`; a query loads only the languages it needs (Arabic script → Arabic + Urdu, Latin → English). Arabic is matched against Tanzil Simple Clean, because Uthmani spelling doesn't match typed Arabic. Orama is still the candidate for the Roman Urdu part, where fuzzy matching matters.
+- **Hadith search as built (25 Nov 2026):** `GET /api/search/hadith?q=&book=&offset=` (20 results per call, counts per book, CDN-cacheable). The prebuild step `scripts/build-hadith-search-index.mjs` writes one normalised line per hadith to `src/data/hadith-search/{ar,ur,en}.txt` (61 MB, gitignored). The function loads only the languages a query needs and scans them (about 15–90 ms warm, about 0.4 s on a cold Arabic query). Snippets are cut from the original chapter files. The function bundle is about **146 MB** (index + hadith data); Vercel's limit is 250 MB. Move it to Supabase Postgres full-text search if it grows (e.g. Muwatta Malik, tafsir).
+- **Roman Urdu as built (25 Nov 2026):** `src/lib/search/roman-urdu.ts` holds a spelling key (dh/zh→z, th→s, gh→g, q→k, w→v, vowel variants and doubled letters merged), a dictionary of about 155 terms (Roman spellings → Urdu, Arabic, English; Urdu/Arabic spellings to be checked by the reviewer) and one-typo matching for words of 5+ letters. `query-plan.ts` turns a query into per-language alternatives for both searches. A Latin query is read as Roman Urdu only when every word is a dictionary or grammar word ("namaz ka waqt"); otherwise it stays English with the dictionary meanings added ("mercy of allah"). Not done yet: matching a Roman transliteration of the Quran text itself ("qul huwa allahu ahad"), which needs a transliteration source and a licence check.
 - The Quran index (~6,236 verses × languages) loads in the browser. The Hadith index is large (~35k hadith × 3 languages), so it is searched in a server route handler instead of being downloaded.
 
 ### Data handling rules
@@ -85,9 +88,27 @@ The plan is now 6 weeks for one developer. The pace is tight, so phases overlap.
 
 ### Week 5: Daily tools + notifications + PWA (Phases 5–6)
 - Prayer times, Qibla (compass + map + degrees), Hijri calendar, Tasbeeh, Duas & Azkar, 99 Names, Zakat.
+- **99 Names as built (26 Nov 2026):** `/tools/names`. All 99 names on one prerendered page, with a filter by name, meaning or number (Arabic, Urdu or Latin script; Urdu/Arabic digits work). Above the list: Quran 7:180, the Bukhari 7392 virtue, and an "About this list" note with the Tirmidhi 3507 grading. Data and checks: see SOURCES.md §4.5.
 - Notifications switched on (prayer times, daily ayah, Khatam reminder).
 - Installable PWA; "save surah for offline"; offline banner.
 - **M4:** daily tools, install and notifications work on Android and iPhone. **Client demo #2.**
+
+### After the daily tools: audio upgrades (client requests, 26 Nov 2026)
+Planned to start once all daily tools ship. Nothing here is built yet unless it says so.
+- **One rule for all audio:** whatever is playing is highlighted on screen and, with "Follow along" on, kept in view. The Quran reader already does this for each verse and for the Bismillah. Apply the same to 99 Names, Duas and translation audio.
+- **99 Names audio:** play one name, or all 99 in order, with the card that is playing highlighted.
+  - Needs an audio source; none with a clear open licence has been found yet.
+  - Options: (a) record our own, e.g. the client's reciter; (b) a licensed recording; (c) the browser's built-in Arabic voice. (c) is free, but quality varies, some phones have no Arabic voice, and it risks mispronouncing the names. **Client decision.**
+- **Tasbeeh audio (client request, 26 Nov 2026):** a play button that recites the selected dhikr, with the phrase highlighted while it plays. Optionally recite on each tap, with an off switch. It needs the same audio source decision as 99 Names; the 8 phrases are short, so one recording session could cover both.
+- **Bismillah every time:** today "Play surah" starts with the Bismillah (every surah except 1 and 9).
+  - To add: also play it when starting at verse 1 from that verse's own play button.
+  - Also when playback continues into the next surah; the player stops at the end of a surah today.
+  - Confirm with the client exactly when they expect it.
+- **Listen to the translation:** after each Arabic verse, play the translations the reader has switched on: Arabic, then English, then Urdu. Highlight each part as it plays.
+  - Candidate source: EveryAyah's translation recordings. These include English read by Ibrahim Walk (Saheeh International, the same text we show) and Urdu recordings. Verify each before use.
+  - The Urdu voice must read the translation we show (Junagarhi). If no Junagarhi recording exists, either find another, or label the audio clearly as a different translation.
+  - Licence: EveryAyah's terms are still an open question (SOURCES.md §7). Record whatever we use in SOURCES.md.
+  - Settings: on/off and which languages, saved with the other reader preferences.
 
 ### Week 6: Stories + testing + launch (Phase 7)
 - Stories section with "pending scholar review" status; the first 5 drafts for the client's reviewer.

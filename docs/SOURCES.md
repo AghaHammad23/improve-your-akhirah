@@ -42,6 +42,7 @@ Legend:
 - **Commercial use:** yes. CC BY allows it, and the page puts no limit on it. Attribution and an unmodified text are required.
 - **Key / rate limit:** none (file download).
 - **Mode:** self-host. Store the file exactly as downloaded, with its copyright header.
+- **In use (25 Nov 2026):** *Simple Clean* v1.1 (standard spelling, no diacritics), for **Arabic search only**. The reader still shows the QuranEnc Uthmani text. Stored verbatim with its notice in `src/data/quran/tanzil-simple-clean.txt` (`npm run data:quran-search`). `scripts/build-search-index.mjs` copies the verses unchanged into `public/search/quran-ar.json`, together with the notice. Normalisation happens only in memory while matching, and results show the text unchanged. The search page credits Tanzil and links to tanzil.net, as the licence requires.
 
 ### 1.2 Tanzil translations (⚠ non-commercial only)
 - **URL:** https://tanzil.net/trans/
@@ -196,6 +197,11 @@ Legend:
 ### 4.5 99 Names of Allah
 - AlAdhan `GET https://api.aladhan.com/v1/asmaAlHusna` returns all 99 (Arabic, transliteration, English meaning). It contains spelling errors ("Maginificent", "Inhertior", "Soverign"), and no licence is stated.
 - **Recommendation:** our own JSON file. The names themselves are not copyrightable. Write our own English and Urdu meanings (scholar-reviewed), and use AlAdhan only to cross-check.
+- **As built (26 Nov 2026):** `src/lib/names.ts`. No new dependency or dataset.
+  - **Arabic and order:** copied from Jami' at-Tirmidhi 3507 in our hadith data. That edition counts "Allah" as the first name, then 98 more (al-Rahman … al-Sabur); it has no al-Ahad.
+  - **Grading:** the list's chain is graded Da'if in our data (al-Albani, Ahmad Shakir, Zubair Ali Zai). The Junagarhi footnote on Quran 7:180 (our QuranEnc data) also says the lists are weak and *mudraj* (a narrator's addition). The page says so. The virtue ("99 names … enters Paradise") is cited from Sahih al-Bukhari 7392.
+  - **References:** 91 names link to a Quran verse and 3 to a Bukhari hadith (6317 for al-Muqaddim/al-Mu'akhkhir, 6099 for al-Sabur); 5 have none (al-Khafid, al-Wajid, al-Majid, al-Mani', al-Rashid). Some verses use the name itself, others the action it describes. `node scripts/check-names.mjs` re-checks the Arabic against Tirmidhi 3507 and every reference against our Quran and hadith text.
+  - **Transliterations and English/Urdu meanings:** written by us, marked for scholar review. The Arabic page shows no meaning.
 
 ### 4.6 Zakat calculator
 - Pure formula (2.5% of zakatable wealth above nisab).

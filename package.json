@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port 3077",
-    "prebuild": "node scripts/build-quran-notes.mjs && node scripts/import-hadith.mjs --if-missing",
+    "prebuild": "node scripts/build-quran-notes.mjs && node scripts/build-search-index.mjs && node scripts/import-hadith.mjs --if-missing && node scripts/build-hadith-search-index.mjs",
     "build": "next build ",
     "start": "next start --port 3077",
     "lint": "eslint",
     "data:quran": "node scripts/import-quran.mjs",
-    "data:hadith": "node scripts/import-hadith.mjs"
+    "data:hadith": "node scripts/import-hadith.mjs",
+    "data:quran-search": "node scripts/import-quran-search-text.mjs",
+    "data:search": "node scripts/build-search-index.mjs && node scripts/build-hadith-search-index.mjs"
   },
   "dependencies": {
     "next": "16.4.6",
