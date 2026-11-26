@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useDeferredValue, useId, useState } from "react";
 import { SearchIcon } from "@/components/icons";
+import { normalizeArabic, normalizeLatin } from "@/lib/text-match";
 
 export type SurahCard = {
   number: number;
@@ -15,28 +16,6 @@ export type SurahCard = {
   /** The number in the locale's digits. */
   numberText: string;
 };
-
-/** Strips Arabic diacritics/Quranic marks and the definite article so "يس" matches "يسٓ". */
-function normalizeArabic(s: string) {
-  return s
-    .replace(/[ً-ٰٟۖ-ۭـ]/g, "")
-    .replace(/[أإآٱ]/g, "ا")
-    .replace(/ى/g, "ي")
-    .replace(/ة/g, "ه")
-    .replace(/^ال/, "")
-    .replace(/\s+/g, "");
-}
-
-/** Latin names: lowercase, letters only, collapse doubled vowels ("Yaseen" ~ "yasin"). */
-function normalizeLatin(s: string) {
-  return s
-    .toLowerCase()
-    .replace(/^(al|an|ar|as|at|ad|adh|ash|az|aal)-/, "")
-    .replace(/[^a-z]/g, "")
-    .replace(/ee/g, "i")
-    .replace(/oo/g, "u")
-    .replace(/aa/g, "a");
-}
 
 export function SurahIndex({
   surahs,

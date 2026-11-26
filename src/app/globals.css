@@ -91,6 +91,11 @@
   --glass-icon-fg: #0f5e5e;
   --ambient-a: rgb(63 176 170 / 0.22);
   --ambient-b: rgb(217 196 143 / 0.3);
+
+  /* Scrollbar */
+  --scrollbar-track: var(--surface);
+  --scrollbar-thumb: color-mix(in oklab, var(--color-brand-700) 38%, transparent);
+  --scrollbar-thumb-hover: color-mix(in oklab, var(--color-brand-700) 72%, transparent);
   color-scheme: light;
 }
 
@@ -110,6 +115,10 @@
   --glass-icon-fg: #e6d6ad;
   --ambient-a: rgb(35 144 139 / 0.22);
   --ambient-b: rgb(200 171 104 / 0.12);
+
+  --scrollbar-track: var(--surface);
+  --scrollbar-thumb: color-mix(in oklab, var(--color-brand-300) 28%, transparent);
+  --scrollbar-thumb-hover: color-mix(in oklab, var(--color-gold-400) 75%, transparent);
   color-scheme: dark;
 }
 
@@ -132,6 +141,47 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+}
+
+/*
+ * Scrollbars in the theme colours (page and inner scroll areas). Chromium and Safari get a rounded thumb
+ * via ::-webkit-scrollbar; Firefox gets the standard properties. Chromium ignores ::-webkit-scrollbar when the
+ * standard properties are set, so those apply only where the pseudo-elements aren't supported.
+ * Phones use overlay scrollbars, and forced-colours (high contrast) mode keeps the system ones.
+ */
+@media not (forced-colors: active) {
+  @supports not selector(::-webkit-scrollbar) {
+    html {
+      scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+      scrollbar-width: thin;
+    }
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
+    background: var(--scrollbar-track);
+  }
+  ::-webkit-scrollbar-thumb {
+    min-height: 40px;
+    border: 3px solid var(--scrollbar-track);
+    border-radius: 999px;
+    background: var(--scrollbar-thumb);
+    background-clip: padding-box;
+  }
+  /* The thumb thickens and deepens on hover or while dragging. */
+  ::-webkit-scrollbar-thumb:hover,
+  ::-webkit-scrollbar-thumb:active {
+    border-width: 2px;
+    background: var(--scrollbar-thumb-hover);
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-button {
+    display: none;
+  }
 }
 
 body {
@@ -518,6 +568,31 @@ html[lang="ur"] body {
       inset 0 0 0 1px rgb(217 196 143 / 0.45),
       0 18px 40px -26px rgb(10 68 68 / 0.5);
   }
+  /* "Juz N begins" divider at the top of the verse where a para starts */
+  .juz-marker {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--color-gold-700);
+  }
+  [data-theme="dark"] .juz-marker {
+    color: var(--color-gold-300);
+  }
+  .juz-marker::before,
+  .juz-marker::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(90deg, transparent, var(--color-gold-500));
+  }
+  .juz-marker::after {
+    background: linear-gradient(90deg, var(--color-gold-500), transparent);
+  }
+
   /* Brief gold glow when jumping to a verse */
   .verse[data-flash] {
     animation: verse-flash 1.8s var(--ease-out-expo);

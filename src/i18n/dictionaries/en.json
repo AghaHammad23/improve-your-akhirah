@@ -110,7 +110,16 @@
     "linkCopied": "Link copied",
     "copyFailed": "Couldn't copy. Please try again.",
     "goToVerse": "Go to verse",
-    "go": "Go"
+    "go": "Go",
+    "tabSurahs": "Surahs",
+    "tabJuz": "Juz (Para)",
+    "juzTitle": "Juz (Para)",
+    "juzSubtitle": "Read the Quran in its 30 parts.",
+    "juzNumber": "Juz {n}",
+    "juzStartsAt": "Starts at {surah} {ref}",
+    "juzRange": "Juz {from}–{to}",
+    "juzMarker": "Juz {n} begins",
+    "browseBy": "Browse the Quran"
   },
   "player": {
     "playSurah": "Play surah",

@@ -2,7 +2,8 @@
 /**
  * Imports the Quran text and translations into src/data/quran/.
  *
- *   node scripts/import-quran.mjs
+ *   node scripts/import-quran.mjs              (everything)
+ *   node scripts/import-quran.mjs --meta-only  (surah list + juz only; no translation downloads)
  *
  * Sources (licences in docs/SOURCES.md):
  *   - Surah list: Tanzil Quran Metadata v1.0, CC BY 3.0 (https://tanzil.net)
@@ -52,7 +53,24 @@ function parseTanzilSuras(js) {
   }));
 }
 
+/** Parses QuranData.Juz ([sura, aya] start of each juz, plus a closing sentinel). */
+function parseTanzilJuz(js) {
+  const start = js.indexOf("QuranData.Juz = [");
+  const block = js.slice(start, js.indexOf("];", start));
+  const starts = [...block.matchAll(/\[(\d+), (\d+)\]/g)].map((m) => ({ surah: Number(m[1]), ayah: Number(m[2]) }));
+  if (starts.length !== 31) throw new Error(`Expected 31 juz boundaries, parsed ${starts.length}`);
+  return starts.slice(0, 30).map((s, i) => ({ number: i + 1, ...s, nameArabic: JUZ_NAMES[i] }));
+}
+
+/** Traditional juz (para) names: the opening words of each juz. */
+const JUZ_NAMES = [
+  "الم", "سيقول", "تلك الرسل", "لن تنالوا", "والمحصنات", "لا يحب الله", "وإذا سمعوا", "ولو أننا", "قال الملأ", "واعلموا",
+  "يعتذرون", "وما من دابة", "وما أبرئ", "ربما", "سبحان الذي", "قال ألم", "اقترب للناس", "قد أفلح", "وقال الذين", "أمن خلق",
+  "اتل ما أوحي", "ومن يقنت", "وما لي", "فمن أظلم", "إليه يرد", "حم", "قال فما خطبكم", "قد سمع الله", "تبارك الذي", "عم",
+];
+
 async function main() {
+  const metaOnly = process.argv.includes("--meta-only");
   await mkdir(path.join(OUT, "surahs"), { recursive: true });
 
   console.log("Fetching Tanzil metadata…");
@@ -61,6 +79,13 @@ async function main() {
   const suras = parseTanzilSuras(tanzil);
   if (suras.length !== 114) throw new Error(`Expected 114 surahs, parsed ${suras.length}`);
   if (suras.reduce((n, s) => n + s.ayahs, 0) !== 6236) throw new Error("Ayah total is not 6236");
+  const juz = parseTanzilJuz(tanzil);
+  await writeFile(path.join(OUT, "surahs.json"), JSON.stringify(suras, null, 1));
+  await writeFile(path.join(OUT, "juz.json"), JSON.stringify(juz, null, 1));
+  if (metaOnly) {
+    console.log("Wrote surahs.json and juz.json (--meta-only).");
+    return;
+  }
 
   console.log("Fetching translation versions…");
   const versions = {};
@@ -98,7 +123,6 @@ async function main() {
   }
   console.log();
 
-  await writeFile(path.join(OUT, "surahs.json"), JSON.stringify(suras, null, 1));
   await writeFile(
     path.join(OUT, "sources.json"),
     JSON.stringify(

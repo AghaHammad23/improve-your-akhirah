@@ -110,7 +110,16 @@
     "linkCopied": "لنک کاپی ہو گیا",
     "copyFailed": "کاپی نہیں ہو سکا۔ دوبارہ کوشش کریں۔",
     "goToVerse": "آیت پر جائیں",
-    "go": "جائیں"
+    "go": "جائیں",
+    "tabSurahs": "سورتیں",
+    "tabJuz": "پارے",
+    "juzTitle": "پارے",
+    "juzSubtitle": "قرآنِ مجید کو اس کے 30 پاروں کے مطابق پڑھیں۔",
+    "juzNumber": "پارہ {n}",
+    "juzStartsAt": "آغاز: {surah} {ref}",
+    "juzRange": "پارہ {from} تا {to}",
+    "juzMarker": "پارہ {n} کا آغاز",
+    "browseBy": "قرآن دیکھیں"
   },
   "player": {
     "playSurah": "سورت سنیں",

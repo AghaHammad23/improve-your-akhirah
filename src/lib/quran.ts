@@ -63,3 +63,45 @@ export function parseSurahNumber(value: string): number | null {
 export function showsBismillah(surah: number): boolean {
   return surah !== 1 && surah !== 9;
 }
+
+/* ---------------- Juz (para) ---------------- */
+
+export type JuzInfo = {
+  number: number;
+  /** Where the juz begins. */
+  surah: number;
+  ayah: number;
+  /** Traditional name: the opening words of the juz. */
+  nameArabic: string;
+};
+
+let juzList: JuzInfo[] | undefined;
+
+export function getJuzList(): JuzInfo[] {
+  juzList ??= JSON.parse(readFileSync(path.join(DATA_DIR, "juz.json"), "utf8")) as JuzInfo[];
+  return juzList;
+}
+
+/** The juz a verse belongs to. */
+export function juzOf(surah: number, ayah: number): number {
+  const list = getJuzList();
+  for (let i = list.length - 1; i >= 0; i--) {
+    const j = list[i];
+    if (surah > j.surah || (surah === j.surah && ayah >= j.ayah)) return j.number;
+  }
+  return 1;
+}
+
+/** Juz that begin inside this surah, keyed by verse number. */
+export function juzStartsIn(surah: number): Map<number, JuzInfo> {
+  return new Map(getJuzList().filter((j) => j.surah === surah).map((j) => [j.ayah, j]));
+}
+
+/** The surahs a juz spans, from its first verse up to (not including) the next juz. */
+export function surahsInJuz(juz: number): number[] {
+  const list = getJuzList();
+  const start = list[juz - 1];
+  const next = list[juz];
+  const last = next ? (next.ayah === 1 ? next.surah - 1 : next.surah) : 114;
+  return Array.from({ length: last - start.surah + 1 }, (_, i) => start.surah + i);
+}

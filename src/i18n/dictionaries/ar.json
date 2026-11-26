@@ -110,7 +110,16 @@
     "linkCopied": "تم نسخ الرابط",
     "copyFailed": "تعذر النسخ. حاول مرة أخرى.",
     "goToVerse": "الانتقال إلى آية",
-    "go": "انتقال"
+    "go": "انتقال",
+    "tabSurahs": "السور",
+    "tabJuz": "الأجزاء",
+    "juzTitle": "أجزاء القرآن",
+    "juzSubtitle": "اقرأ القرآن الكريم مقسّمًا إلى ثلاثين جزءًا.",
+    "juzNumber": "الجزء {n}",
+    "juzStartsAt": "يبدأ من: {surah} {ref}",
+    "juzRange": "الأجزاء {from}–{to}",
+    "juzMarker": "بداية الجزء {n}",
+    "browseBy": "تصفح القرآن"
   },
   "player": {
     "playSurah": "تشغيل السورة",

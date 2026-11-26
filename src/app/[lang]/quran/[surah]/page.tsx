@@ -13,10 +13,12 @@ import {
   getSurahMeta,
   getSurahVerses,
   parseSurahNumber,
+  juzOf,
+  juzStartsIn,
   showsBismillah,
   type SurahMeta,
 } from "@/lib/quran";
-import { PREFS_KEY } from "@/lib/reader-prefs";
+import { prefsScript } from "@/lib/reader-prefs-script";
 
 export async function generateStaticParams() {
   return Array.from({ length: 114 }, (_, i) => ({ surah: String(i + 1) }));
@@ -32,9 +34,6 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/quran/[sur
     description: `${dict.quran.title}: ${meta.transliteration} (${meta.meaningEn}), ${meta.ayahs}`,
   };
 }
-
-/** Applies saved translation/size prefs before first paint (full page loads only). */
-const prefsScript = `(function(){try{var s=JSON.parse(localStorage.getItem(${JSON.stringify(PREFS_KEY)})||"null");var r=document.getElementById("reader");if(!s||!r)return;if(s.tr){if("ur" in s.tr)r.dataset.trUr=String(!!s.tr.ur);if("en" in s.tr)r.dataset.trEn=String(!!s.tr.en)}if(s.size)r.style.setProperty("--quran-scale",String(s.size))}catch(e){}})()`;
 
 function surahName(meta: SurahMeta, locale: string) {
   return locale === "en" ? meta.transliteration : meta.nameArabic;
@@ -81,6 +80,13 @@ async function SurahContent({ params }: Pick<PageProps<"/[lang]/quran/[surah]">,
   const q = dict.quran;
   const meta = getSurahMeta(n)!;
   const verses = getSurahVerses(n);
+  const juzFrom = juzOf(n, 1);
+  const juzTo = juzOf(n, meta.ayahs);
+  const juzStarts = juzStartsIn(n);
+  const juzLabel =
+    juzFrom === juzTo
+      ? fill(q.juzNumber, { n: formatNumber(locale, juzFrom) })
+      : fill(q.juzRange, { from: formatNumber(locale, juzFrom), to: formatNumber(locale, juzTo) });
   const sources = getQuranSources();
   const bismillah = showsBismillah(n) ? getSurahVerses(1)[0].ar : null;
   const prev = n > 1 ? getSurahMeta(n - 1) : undefined;
@@ -115,7 +121,7 @@ async function SurahContent({ params }: Pick<PageProps<"/[lang]/quran/[surah]">,
           </h1>
           <p className="mt-2 text-sm text-cream-100/80">
             {locale === "en" && <>{meta.meaningEn} · </>}
-            {fill(q.versesCount, { n: formatNumber(locale, meta.ayahs) })} · {meta.type === "makki" ? q.makki : q.madani}
+            {fill(q.versesCount, { n: formatNumber(locale, meta.ayahs) })} · {meta.type === "makki" ? q.makki : q.madani} · {juzLabel}
           </p>
         </div>
       </section>
@@ -162,6 +168,14 @@ async function SurahContent({ params }: Pick<PageProps<"/[lang]/quran/[surah]">,
         <ol className="mt-2">
           {verses.map((v) => (
             <li key={v.n} id={`v-${v.n}`} className="verse">
+              {juzStarts.has(v.n) && (
+                <p className="juz-marker">
+                  <span>{fill(q.juzMarker, { n: formatNumber(locale, juzStarts.get(v.n)!.number) })}</span>
+                  <span lang="ar" dir="rtl" className="font-quran text-lg">
+                    {juzStarts.get(v.n)!.nameArabic}
+                  </span>
+                </p>
+              )}
               <div className="flex items-center justify-between gap-3">
                 <span className="star-badge" aria-label={fill(q.verseLabel, { n: formatNumber(locale, v.n) })}>
                   <span>{formatNumber(locale, v.n)}</span>
