@@ -5,10 +5,10 @@ export const sections = [
   { slug: "search", key: "search", ready: false },
   { slug: "prayer-times", key: "prayerTimes", ready: false },
   { slug: "duas", key: "duas", ready: false },
-  { slug: "tools", key: "tools", ready: false },
+  { slug: "tools", key: "tools", ready: true },
 ] as const;
 
 /** Sections that exist only as "coming soon" placeholders for now. Remove a slug when its real route ships. */
-export const placeholderSlugs = ["search", "prayer-times", "duas", "tools", "sources"] as const;
+export const placeholderSlugs = ["search", "prayer-times", "duas", "sources"] as const;
 
 export type SectionKey = (typeof sections)[number]["key"];

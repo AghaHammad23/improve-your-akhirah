@@ -147,6 +147,47 @@ export const ShareIcon = (p: IconProps) => (
   </Base>
 );
 
+/** Prayer beads (Tasbeeh). */
+export const BeadsIcon = (p: IconProps) => (
+  <Base {...p}>
+    <circle cx="12" cy="4.5" r="1.6" />
+    <circle cx="17.3" cy="6.7" r="1.6" />
+    <circle cx="19.5" cy="12" r="1.6" />
+    <circle cx="17.3" cy="17.3" r="1.6" />
+    <circle cx="6.7" cy="17.3" r="1.6" />
+    <circle cx="4.5" cy="12" r="1.6" />
+    <circle cx="6.7" cy="6.7" r="1.6" />
+    <path d="M12 17v4M10.5 21h3" />
+  </Base>
+);
+
+/** Eight-point star (99 Names). */
+export const StarIcon = (p: IconProps) => (
+  <Base {...p}>
+    <rect x="6" y="6" width="12" height="12" rx="1.5" />
+    <rect x="6" y="6" width="12" height="12" rx="1.5" transform="rotate(45 12 12)" />
+  </Base>
+);
+
+/** Stacked coins (Zakat). */
+export const CoinsIcon = (p: IconProps) => (
+  <Base {...p}>
+    <ellipse cx="9" cy="7" rx="5" ry="2.5" />
+    <path d="M4 7v4c0 1.4 2.2 2.5 5 2.5s5-1.1 5-2.5V7" />
+    <path d="M10 15.4c.6 1.2 2.6 2.1 5 2.1 2.8 0 5-1.1 5-2.5v-4c0-1.4-2.2-2.5-5-2.5" />
+    <path d="M4 11v4c0 1.4 2.2 2.5 5 2.5" />
+  </Base>
+);
+
+/** Book with a check mark (Khatam tracker). */
+export const BookCheckIcon = (p: IconProps) => (
+  <Base {...p}>
+    <path d="M5 4.5h11a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3V4.5Z" />
+    <path d="M5 17a3 3 0 0 1 3-3h11" />
+    <path d="m9 8.5 2 2 3.5-3.5" />
+  </Base>
+);
+
 /** Points to the reading end; CSS mirrors it in RTL. */
 export const ArrowIcon = (p: IconProps) => (
   <Base {...p}>

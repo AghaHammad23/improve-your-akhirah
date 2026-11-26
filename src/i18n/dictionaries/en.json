@@ -172,5 +172,72 @@
     "nextChapter": "Next chapter",
     "backToChapters": "All chapters",
     "chapterNav": "Chapter navigation"
+  },
+  "tools": {
+    "title": "Daily tools",
+    "subtitle": "Small everyday helpers for your worship. Everything works in your browser.",
+    "open": "Open",
+    "items": {
+      "tasbeeh": {
+        "title": "Tasbeeh counter",
+        "text": "Count your dhikr with a tap, with targets and the after-prayer tasbeeh."
+      },
+      "names": {
+        "title": "99 Names of Allah",
+        "text": "The Beautiful Names with their meanings."
+      },
+      "zakat": {
+        "title": "Zakat calculator",
+        "text": "Work out the zakat due on your savings, gold and silver."
+      },
+      "khatam": {
+        "title": "Khatam tracker",
+        "text": "Plan and track a complete reading of the Quran."
+      }
+    },
+    "tasbeeh": {
+      "title": "Tasbeeh counter",
+      "subtitle": "Tap the circle to count. Your counts are saved on this device.",
+      "modeLabel": "Counting mode",
+      "counter": "Counter",
+      "afterPrayer": "After prayer (33 · 33 · 34)",
+      "dhikrLabel": "Dhikr",
+      "targetLabel": "Target",
+      "noLimit": "No limit",
+      "tap": "Tap to count",
+      "countOf": "{dhikr}: {n} of {target}. Tap to count",
+      "countFree": "{dhikr}: {n}. Tap to count",
+      "undo": "Undo",
+      "reset": "Reset",
+      "undoReset": "Undo reset",
+      "rounds": "Rounds completed",
+      "total": "All-time total",
+      "vibrate": "Vibrate",
+      "roundDone": "{dhikr} × {n} complete",
+      "stepDone": "{dhikr} complete. Next one",
+      "allDone": "All three complete. May Allah accept it.",
+      "startAgain": "Tap to start again",
+      "stepOf": "Step {n} of {total}",
+      "afterPrayerNote": "The Prophet ﷺ taught saying SubhanAllah 33 times, Alhamdulillah 33 times and Allahu Akbar 34 times after every obligatory prayer.",
+      "source": "Sahih Muslim, hadith 1349",
+      "saved": "Saved in this browser only. Clearing your browser data resets it."
+    },
+    "names": {
+      "title": "99 Names of Allah",
+      "subtitle": "Al-Asma' al-Husna, the Most Beautiful Names, with their meanings and where they are mentioned in the Quran and Sunnah.",
+      "virtue": "The Prophet ﷺ said: “Allah has ninety-nine Names, one-hundred less one; and he who memorized them all by heart will enter Paradise.”",
+      "aboutTitle": "About this list",
+      "aboutText": "The number ninety-nine and this virtue are authentic (Sahih al-Bukhari). The names themselves, in this order, come from the list in {source}, which counts “Allah” as the first name. Its chain is graded weak, and many scholars hold that the list was added by a narrator; other narrations differ slightly, and Allah's names are not limited to ninety-nine.",
+      "refsText": "{n} of the 99 names link to a verse of the Quran or a hadith that mentions the name, or the action it describes.",
+      "grading": "Grading of the list",
+      "review": "The transliterations and meanings are written by our team and are awaiting review by a scholar.",
+      "searchLabel": "Find a name",
+      "searchPlaceholder": "Name, meaning or number, e.g. Ar-Rahman or 20",
+      "noResults": "No name matches your search.",
+      "resultCount": "{n} names",
+      "numberLabel": "Name {n}",
+      "quranRef": "Quran {ref}",
+      "hadithRef": "{book} {n}"
+    }
   }
 }

@@ -155,6 +155,21 @@ export function chapterPath(book: HadithBookSlug, chapter: number, page = 1): st
   return page > 1 ? `/hadith/${book}/${chapter}/page/${page}` : `/hadith/${book}/${chapter}`;
 }
 
+/** A hadith by its number in our edition (the same `n` the reader anchors as #h-n). */
+export type HadithRef = { book: HadithBookSlug; chapter: number; n: number };
+
+/** Link (with locale) to the reading page that shows a hadith, scrolled to it. */
+export function hadithHref(locale: string, { book, chapter, n }: HadithRef): string {
+  const index = getHadithSection(book, chapter).findIndex((h) => h.n === n);
+  const page = sectionPages(book, chapter).findIndex((p) => index >= p.start && index < p.end) + 1;
+  return `/${locale}${chapterPath(book, chapter, Math.max(page, 1))}#h-${n}`;
+}
+
+/** A hadith from our data (for showing its grades next to a citation). */
+export function getHadith({ book, chapter, n }: HadithRef): Hadith | undefined {
+  return getHadithSection(book, chapter).find((h) => h.n === n);
+}
+
 export type GradeTone = "sound" | "good" | "weak" | "other";
 
 /**
