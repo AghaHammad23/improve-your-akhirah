@@ -1,7 +1,7 @@
 /** Top-level sections of the site, in navigation order. `key` points into dictionary `nav`. */
 export const sections = [
   { slug: "quran", key: "quran", ready: true },
-  { slug: "hadith", key: "hadith", ready: false },
+  { slug: "hadith", key: "hadith", ready: true },
   { slug: "search", key: "search", ready: false },
   { slug: "prayer-times", key: "prayerTimes", ready: false },
   { slug: "duas", key: "duas", ready: false },
@@ -9,6 +9,6 @@ export const sections = [
 ] as const;
 
 /** Sections that exist only as "coming soon" placeholders for now. Remove a slug when its real route ships. */
-export const placeholderSlugs = ["hadith", "search", "prayer-times", "duas", "tools", "sources"] as const;
+export const placeholderSlugs = ["search", "prayer-times", "duas", "tools", "sources"] as const;
 
 export type SectionKey = (typeof sections)[number]["key"];

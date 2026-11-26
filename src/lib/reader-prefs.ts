@@ -1,6 +1,9 @@
 "use client";
 
+import { PREFS_KEY } from "./reader-prefs-script";
 import { defaultReciter } from "./reciters";
+
+export { PREFS_KEY };
 
 /** Reading and listening preferences, saved in this browser (synced to the account later). */
 export type ReaderPrefs = {
@@ -13,8 +16,6 @@ export type ReaderPrefs = {
   speed: number;
   follow: boolean;
 };
-
-export const PREFS_KEY = "reader:v1";
 
 export const SIZE_MIN = 0.8;
 export const SIZE_MAX = 1.8;

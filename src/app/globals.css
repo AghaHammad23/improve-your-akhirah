@@ -486,12 +486,14 @@ html[lang="ur"] body {
     color: var(--ink);
     transform: translateY(-1px);
   }
-  .chip[aria-pressed="true"] {
+  .chip[aria-pressed="true"],
+  .chip[aria-current="page"] {
     border-color: transparent;
     background: linear-gradient(135deg, var(--color-brand-600), var(--color-brand-800));
     color: #fff;
   }
-  [data-theme="dark"] .chip[aria-pressed="true"] {
+  [data-theme="dark"] .chip[aria-pressed="true"],
+  [data-theme="dark"] .chip[aria-current="page"] {
     background: linear-gradient(135deg, var(--color-gold-300), var(--color-gold-500));
     color: var(--color-brand-950);
   }
@@ -625,6 +627,53 @@ html[lang="ur"] body {
     border-color: transparent;
     background: linear-gradient(135deg, var(--color-gold-200), var(--color-gold-500));
     color: var(--color-brand-900);
+  }
+
+  /* ---------------- Hadith reader ---------------- */
+  /* Arabic hadith text (with diacritics) in Amiri; scales with the same text-size setting as the Quran. */
+  .hadith-ar {
+    font-family: var(--font-arabic-display);
+    font-size: calc(1.3rem * var(--quran-scale, 1));
+    line-height: 2.1;
+    text-align: start;
+    color: var(--ink);
+  }
+  @media (min-width: 640px) {
+    .hadith-ar {
+      font-size: calc(1.5rem * var(--quran-scale, 1));
+    }
+  }
+  /* "Translation not available" notes, in the page's own language and font. */
+  .tr-missing {
+    font-family: inherit;
+    font-size: 0.875rem;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+  /* One scholar's grading. Colour only groups grades loosely; the grade text is always shown. */
+  .grade {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--glass-bg);
+    padding: 0.3rem 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+  .grade[data-tone="sound"] {
+    border-color: var(--color-brand-500);
+    background: color-mix(in oklab, var(--color-brand-500) 12%, transparent);
+  }
+  .grade[data-tone="good"] {
+    border-color: var(--color-gold-500);
+    background: color-mix(in oklab, var(--color-gold-400) 16%, transparent);
+  }
+  .grade[data-tone="weak"] {
+    border-style: dashed;
   }
 
   .player-select {

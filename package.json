@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port 3077",
-    "prebuild": "node scripts/build-quran-notes.mjs",
+    "prebuild": "node scripts/build-quran-notes.mjs && node scripts/import-hadith.mjs --if-missing",
     "build": "next build ",
     "start": "next start --port 3077",
     "lint": "eslint",
-    "data:quran": "node scripts/import-quran.mjs"
+    "data:quran": "node scripts/import-quran.mjs",
+    "data:hadith": "node scripts/import-hadith.mjs"
   },
   "dependencies": {
     "next": "16.4.6",
