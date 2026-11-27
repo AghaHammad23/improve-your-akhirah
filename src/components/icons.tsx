@@ -188,6 +188,23 @@ export const BookCheckIcon = (p: IconProps) => (
   </Base>
 );
 
+/** Map pin (a chosen place). */
+export const PinIcon = (p: IconProps) => (
+  <Base {...p}>
+    <path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z" />
+    <circle cx="12" cy="10" r="2.4" />
+  </Base>
+);
+
+/** Crosshair (use my current location). */
+export const LocateIcon = (p: IconProps) => (
+  <Base {...p}>
+    <circle cx="12" cy="12" r="6.5" />
+    <circle cx="12" cy="12" r="2" />
+    <path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3" />
+  </Base>
+);
+
 /** Points to the reading end; CSS mirrors it in RTL. */
 export const ArrowIcon = (p: IconProps) => (
   <Base {...p}>

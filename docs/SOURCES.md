@@ -169,6 +169,20 @@ Legend:
 - **URL:** https://github.com/batoulapps/adhan-js · **Licence:** MIT · commercial use allowed · no key.
 - Computes all five prayer times and sunrise in the browser from latitude/longitude, with selectable methods (Karachi/Hanafi, MWL, Umm al-Qura, ISNA, Egyptian…) and Hanafi/Shafi Asr. It works offline and costs nothing per request.
 - **Backup:** AlAdhan API (https://aladhan.com/prayer-times-api). Free and needs no account (per its credits-and-terms page), but **no licence, commercial terms or rate limits are published**. The /terms URL returns 404.
+- **In use (27 Nov 2026):** `adhan@4.4.6` (pinned), in `src/lib/prayer.ts`. Everything runs in the browser, and the visitor's location is never sent to us.
+  - **Default method by country:** Karachi + Hanafi Asr for PK, IN, BD and AF; Umm al-Qura for SA; Moonsighting Committee for the US, CA, GB and IE (adhan's own recommendation); Muslim World League elsewhere. The full map is in `prayer.ts`. Visitors can change the method and the Asr school.
+  - **High latitudes:** adhan's recommended rule is applied automatically.
+  - **Not done yet:** Umm al-Qura's +30 min Isha in Ramadan, and per-prayer minute adjustments to match a local mosque.
+  - The page credits adhan (MIT) and tells visitors their local mosque may differ by a few minutes.
+
+### 4.1a City list for prayer times and Qibla: GeoNames
+- **URL:** https://www.geonames.org · `cities15000.zip` (every city with 15,000+ people) and `admin1CodesASCII.txt` from https://download.geonames.org/export/dump/
+- **Licence:** CC BY 4.0 (per the GeoNames download page). Commercial use is allowed with attribution.
+- **Key / rate limit:** none (file download). We don't call the GeoNames web services.
+- **Mode:** self-host. `npm run data:cities` (`scripts/import-cities.mjs`) writes `public/prayer/cities.json`, which is committed: 34,248 cities, 1.8 MB, about 0.8 MB gzipped. The browser loads it only on the first search or "Use my location".
+- **Changes we make:** fields reduced to name, country, region, coordinates (rounded to 4 decimals), timezone, and up to 4 Arabic-script alternate names (Urdu spellings first, used only for matching). We don't show the alternate names because their language isn't labelled.
+- **Attribution:** "City list © GeoNames, CC BY 4.0" with a link, on both prayer pages.
+- **Why not a geocoding API:** Nominatim's policy forbids search-as-you-type, and a bundled list keeps the visitor's searches on their device.
 
 ### 4.2 Qibla: adhan-js `Qibla(coordinates)` (recommended)
 - Returns the bearing in degrees from true North to the Kaaba. It is pure maths (great-circle bearing), so no API is needed.
@@ -177,10 +191,15 @@ Legend:
   - The OSM tile policy requires *"© OpenStreetMap contributors"* attribution and a custom User-Agent.
   - It forbids bulk/offline download: *"Offline use is not permitted on tile.openstreetmap.org."*
   - It warns *"Commercial services … should be especially aware that access may be withdrawn"*. If we go commercial, switch to a paid or free-tier tile provider.
+- **In use (27 Nov 2026):** `leaflet@1.9.4` (pinned), with tiles from `tile.openstreetmap.org`.
+  - The map loads only when the visitor taps "Show map". Next to that button, they're told that OpenStreetMap's servers see the area being viewed.
+  - The attribution control is always visible. The browser sends a Referer, which the policy accepts for websites. The service worker must **not** cache tiles when we add the PWA.
+  - The compass uses `deviceorientationabsolute` (Android Chrome) or `webkitCompassHeading` (iOS, after a permission tap). Without either, the dial is drawn with north at the top, beside the angle in degrees.
 
 ### 4.3 Hijri calendar: built-in browser `Intl` (recommended)
 - `new Intl.DateTimeFormat('ur-PK-u-ca-islamic-umalqura')` gives Umm al-Qura dates with no data or licence. We add a user "±1 day" setting, because moon sighting in Pakistan often differs from Umm al-Qura.
 - **Backup:** AlAdhan Hijri endpoints (same terms caveat as 4.1).
+- **In use (27 Nov 2026):** on the Prayer times page, with a −2…+2 day setting (wider than the ±1 planned, since some countries differ by two days).
 
 ### 4.4 Duas and Azkar
 - **No verified openly licensed dataset with Arabic + English + Urdu exists.**

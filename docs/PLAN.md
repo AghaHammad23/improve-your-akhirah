@@ -88,6 +88,13 @@ The plan is now 6 weeks for one developer. The pace is tight, so phases overlap.
 
 ### Week 5: Daily tools + notifications + PWA (Phases 5–6)
 - Prayer times, Qibla (compass + map + degrees), Hijri calendar, Tasbeeh, Duas & Azkar, 99 Names, Zakat.
+- **Prayer times & Qibla as built (27 Nov 2026):** `/prayer-times` and `/prayer-times/qibla`, prerendered shells, with everything calculated in the browser (adhan-js). Licences: SOURCES.md §4.1–4.3.
+  - **Location:** "Use my location" (GPS; the place is named after the nearest city) or a city search over the bundled GeoNames list (Latin, Urdu or Arabic script). It's saved in the browser (`prayer:v1`), shared by both pages, and stays on the device.
+  - **Times page:** next prayer with a countdown, the day's times with the current prayer highlighted ("Jumu'ah" on Fridays), previous/next day, Gregorian + Hijri date, and a monthly timetable that can be printed.
+  - **Settings:** method (automatic by country), Asr school, Hijri ±2 days.
+  - **Qibla page:** angle from north, distance, a live compass (Android, and iPhone after a tap), and an opt-in OpenStreetMap map with the great-circle line, opening zoomed in on the place.
+  - **Not yet:** per-prayer minute adjustments, Ramadan Isha +30 for Umm al-Qura, adhan notifications (week 5), and syncing the place to the account (week 4).
+  - **Needs testing on real phones:** the compass (iPhone permission prompt, Android absolute heading, screen rotation).
 - **99 Names as built (26 Nov 2026):** `/tools/names`. All 99 names on one prerendered page, with a filter by name, meaning or number (Arabic, Urdu or Latin script; Urdu/Arabic digits work). Above the list: Quran 7:180, the Bukhari 7392 virtue, and an "About this list" note with the Tirmidhi 3507 grading. Data and checks: see SOURCES.md §4.5.
 - Notifications switched on (prayer times, daily ayah, Khatam reminder).
 - Installable PWA; "save surah for offline"; offline banner.
